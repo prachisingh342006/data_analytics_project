@@ -7,6 +7,9 @@ import pandas as pd
 import numpy as np
 import os
 
+# ── GitHub Repository ────────────────────────────────────────────────
+GITHUB_REPO = "https://github.com/prachisingh342006/data_analytics_project"
+
 # ── Load & Prepare Data ──────────────────────────────────────────────
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                          "Student_performance_data _.csv")
@@ -61,6 +64,7 @@ app = dash.Dash(__name__, suppress_callback_exceptions=True,
                 meta_tags=[{"name": "viewport",
                             "content": "width=device-width, initial-scale=1"}])
 app.title = "Student Early Warning Dashboard"
+server = app.server  # Expose Flask server for Vercel deployment
 
 # ── Shared Styles ─────────────────────────────────────────────────────
 CARD = {
@@ -175,6 +179,17 @@ def page_academic():
         html.Div([
             html.Div([dcc.Graph(figure=fig_edu)], style={**CARD, "flex": "1"}),
         ]),
+        # GitHub Repository Link
+        html.Div([
+            html.Div([
+                html.Span("📂 ", style={"fontSize":"18px"}),
+                html.Span("Source Code & Documentation: ", style={"color":COLORS["muted"],"fontWeight":"500"}),
+                html.A(GITHUB_REPO, href=GITHUB_REPO, target="_blank",
+                       style={"color":COLORS["accent"],"textDecoration":"none","fontWeight":"600"}),
+                html.Span(" — built with Plotly Dash & Python",
+                          style={"color":COLORS["muted"],"marginLeft":"8px","fontSize":"13px"}),
+            ], style={"display":"flex","alignItems":"center","flexWrap":"wrap","gap":"4px"}),
+        ], style={**CARD, "padding":"14px 20px","borderLeft":f"4px solid {COLORS['blue']}"}),
     ])
 
 # ════════════════════════════════════════════════════════════════════════
@@ -541,13 +556,28 @@ def page_ethics():
 app.layout = html.Div([
     # Header
     html.Div([
-        html.H1("🎓 Student Early Warning Dashboard",
-                style={"margin":"0","fontSize":"26px","fontWeight":"700"}),
-        html.P("Reducing university failure rates by 20% through data-driven early intervention",
-               style={"margin":"4px 0 0","fontSize":"14px","color": COLORS["muted"]}),
+        html.Div([
+            html.H1("🎓 Student Early Warning Dashboard",
+                    style={"margin":"0","fontSize":"26px","fontWeight":"700"}),
+            html.P("Reducing university failure rates by 20% through data-driven early intervention",
+                   style={"margin":"4px 0 0","fontSize":"14px","color": COLORS["muted"]}),
+        ], style={"flex":"1"}),
+        html.A(
+            html.Div([
+                html.Img(src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+                         style={"width":"22px","height":"22px","filter":"invert(1)","marginRight":"8px","verticalAlign":"middle"}),
+                html.Span("View on GitHub", style={"verticalAlign":"middle"}),
+            ], style={"display":"flex","alignItems":"center"}),
+            href=GITHUB_REPO, target="_blank",
+            style={"color":"#4fc3f7","textDecoration":"none","fontSize":"14px",
+                   "fontWeight":"600","backgroundColor":"rgba(33,150,243,0.15)",
+                   "padding":"10px 20px","borderRadius":"8px",
+                   "border":f"1px solid {COLORS['blue']}","transition":"all 0.2s"},
+        ),
     ], style={"backgroundColor": COLORS["card"], "padding": "20px 30px",
               "borderBottom": f"2px solid {COLORS['blue']}",
-              "color": COLORS["text"]}),
+              "color": COLORS["text"],
+              "display":"flex","alignItems":"center","justifyContent":"space-between"}),
 
     # Tabs
     html.Div([

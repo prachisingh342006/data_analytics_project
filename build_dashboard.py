@@ -155,6 +155,58 @@ sc(ws1, 13, 4, '=SUM(D8:D12)', font=bold_font, fmt=pct_fmt, align=Alignment(hori
 sc(ws1, 13, 5, '=AVERAGE(Data!N2:N' + str(DER) + ')', font=bold_font, fmt=dec_fmt, align=Alignment(horizontal="center"))
 stripe(ws1, 8, 12, 2, 5)
 
+# Additional Academic Stats (Formula-Driven)
+section_label(ws1, "Key Academic Statistics (Formula-Driven)", 28, 1, 5)
+write_hdr(ws1, 29, 2, ["Metric", "Value", "Formula"])
+acad_stats = [
+    ("Median GPA", '=MEDIAN(Data!N2:N'+str(DER)+')', "MEDIAN", dec_fmt),
+    ("Std Dev GPA", '=ROUND(STDEV(Data!N2:N'+str(DER)+'),3)', "STDEV", '0.000'),
+    ("Max GPA", '=MAX(Data!N2:N'+str(DER)+')', "MAX", dec_fmt),
+    ("Min GPA", '=MIN(Data!N2:N'+str(DER)+')', "MIN", dec_fmt),
+    ("GPA > 3.0 Count", '=COUNTIF(Data!N2:N'+str(DER)+',">3")', "COUNTIF", num_fmt),
+    ("GPA > 3.0 Pct", '=COUNTIF(Data!N2:N'+str(DER)+',">3")/COUNTA(Data!A2:A'+str(DER)+')', "COUNTIF/COUNTA", pct_fmt),
+    ("GPA < 2.0 Count", '=COUNTIF(Data!N2:N'+str(DER)+',"<2")', "COUNTIF", num_fmt),
+    ("GPA < 2.0 Pct", '=COUNTIF(Data!N2:N'+str(DER)+',"<2")/COUNTA(Data!A2:A'+str(DER)+')', "COUNTIF/COUNTA", pct_fmt),
+    ("Median Absences", '=MEDIAN(Data!G2:G'+str(DER)+')', "MEDIAN", '0.0'),
+    ("Max Absences", '=MAX(Data!G2:G'+str(DER)+')', "MAX", num_fmt),
+    ("Median Study Time", '=MEDIAN(Data!F2:F'+str(DER)+')', "MEDIAN", '0.0'),
+    ("Max Study Time", '=MAX(Data!F2:F'+str(DER)+')', "MAX", '0.0'),
+]
+for idx, (mlbl, mfml, mexp, mfmt) in enumerate(acad_stats):
+    r = 30 + idx
+    sc(ws1, r, 2, mlbl, font=bold_font, align=Alignment(horizontal="left"))
+    sc(ws1, r, 3, mfml, fmt=mfmt, align=Alignment(horizontal="center"))
+    sc(ws1, r, 4, mexp, font=Font(name="Calibri", italic=True, size=9, color="666666"), align=Alignment(horizontal="left"))
+stripe(ws1, 30, 41, 2, 4)
+
+# Gender Breakdown (Formula)
+section_label(ws1, "Gender Breakdown (Formula-Driven)", 43, 1, 5)
+write_hdr(ws1, 44, 2, ["Gender", "Count", "Avg GPA", "Fail Rate"])
+for idx, (glbl, gv) in enumerate([("Male",1),("Female",0)]):
+    r = 45 + idx
+    sc(ws1, r, 2, glbl, align=Alignment(horizontal="center"))
+    sc(ws1, r, 3, '=COUNTIF(Data!C2:C'+str(DER)+','+str(gv)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws1, r, 4, '=AVERAGEIF(Data!C2:C'+str(DER)+','+str(gv)+',Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws1, r, 5, '=COUNTIFS(Data!C2:C'+str(DER)+','+str(gv)+',Data!O2:O'+str(DER)+',4)/C'+str(r), fmt=pct_fmt, align=Alignment(horizontal="center"))
+sc(ws1, 47, 2, "Total", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws1, 47, 3, '=SUM(C45:C46)', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws1, 47, 4, '=AVERAGE(Data!N2:N'+str(DER)+')', font=bold_font, fmt=dec_fmt, align=Alignment(horizontal="center"))
+sc(ws1, 47, 5, '=COUNTIF(Data!O2:O'+str(DER)+',4)/COUNTA(Data!A2:A'+str(DER)+')', font=bold_font, fmt=pct_fmt, align=Alignment(horizontal="center"))
+stripe(ws1, 45, 46, 2, 5)
+
+# Extracurricular Activities Impact (Formula)
+section_label(ws1, "Extracurricular Activities Impact (Formula-Driven)", 49, 1, 5)
+write_hdr(ws1, 50, 2, ["Activity", "Participants", "Non-Participants Avg GPA", "Participants Avg GPA", "GPA Difference"])
+activities = [("Extracurricular","J"), ("Sports","K"), ("Music","L"), ("Volunteering","M")]
+for idx, (aname, acol) in enumerate(activities):
+    r = 51 + idx
+    sc(ws1, r, 2, aname, font=bold_font, align=Alignment(horizontal="left"))
+    sc(ws1, r, 3, '=COUNTIF(Data!'+acol+'2:'+acol+str(DER)+',1)', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws1, r, 4, '=AVERAGEIF(Data!'+acol+'2:'+acol+str(DER)+',0,Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws1, r, 5, '=AVERAGEIF(Data!'+acol+'2:'+acol+str(DER)+',1,Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws1, r, 6, '=E'+str(r)+'-D'+str(r), fmt='+0.00;-0.00;0.00', align=Alignment(horizontal="center"))
+stripe(ws1, 51, 54, 2, 6)
+
 # CHART 1: Grade Distribution Bar
 chart1 = BarChart()
 chart1.type = "col"
@@ -359,14 +411,62 @@ ws2.add_chart(ch_tut, "H41")
 
 # Parental Support
 section_label(ws2, "Parental Support Impact", 35, 1, 7)
-write_hdr(ws2, 36, 2, ["Support Level", "Students", "Avg GPA", "Fail Rate"])
+write_hdr(ws2, 36, 2, ["Support Level", "Students", "Avg GPA", "Fail Rate", "Avg Risk Score"])
 for idx, (sv, sl) in enumerate([(0,"None"),(1,"Low"),(2,"Moderate"),(3,"High"),(4,"Very High")]):
     r = 37 + idx
     sc(ws2, r, 2, sl, align=Alignment(horizontal="center"))
     sc(ws2, r, 3, '=COUNTIF(Data!I2:I'+str(DER)+','+str(sv)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
     sc(ws2, r, 4, '=AVERAGEIF(Data!I2:I'+str(DER)+','+str(sv)+',Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
     sc(ws2, r, 5, '=COUNTIFS(Data!I2:I'+str(DER)+','+str(sv)+',Data!O2:O'+str(DER)+',4)/C'+str(r), fmt=pct_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 6, '=AVERAGEIF(Data!I2:I'+str(DER)+','+str(sv)+',Data!Q2:Q'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
 stripe(ws2, 37, 41, 2, 5)
+
+# Extracurricular Impact on GPA (Formula-Driven)
+section_label(ws2, "Extracurricular Activities Impact (Formula-Driven)", 43, 1, 7)
+write_hdr(ws2, 44, 2, ["Activity", "Participants", "Non-Part Count", "Part Avg GPA", "Non-Part Avg GPA", "Part Fail Rate", "Non-Part Fail Rate"])
+act_factors = [("Extracurricular","J"), ("Sports","K"), ("Music","L"), ("Volunteering","M")]
+for idx, (aname, acol) in enumerate(act_factors):
+    r = 45 + idx
+    sc(ws2, r, 2, aname, font=bold_font, align=Alignment(horizontal="left"))
+    sc(ws2, r, 3, '=COUNTIF(Data!'+acol+'2:'+acol+str(DER)+',1)', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 4, '=COUNTIF(Data!'+acol+'2:'+acol+str(DER)+',0)', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 5, '=AVERAGEIF(Data!'+acol+'2:'+acol+str(DER)+',1,Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 6, '=AVERAGEIF(Data!'+acol+'2:'+acol+str(DER)+',0,Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 7, '=IF(C'+str(r)+'=0,0,COUNTIFS(Data!'+acol+'2:'+acol+str(DER)+',1,Data!O2:O'+str(DER)+',4)/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 8, '=IF(D'+str(r)+'=0,0,COUNTIFS(Data!'+acol+'2:'+acol+str(DER)+',0,Data!O2:O'+str(DER)+',4)/D'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+stripe(ws2, 45, 48, 2, 8)
+
+# Age Group Analysis (Formula-Driven)
+section_label(ws2, "Age Group Analysis (Formula-Driven)", 50, 1, 7)
+write_hdr(ws2, 51, 2, ["Age Group", "Count", "Avg GPA", "Avg Absences", "Fail Rate"])
+age_bands = [("15-16",15,16),("17-18",17,18)]
+for idx, (albl, lo, hi) in enumerate(age_bands):
+    r = 52 + idx
+    sc(ws2, r, 2, albl, align=Alignment(horizontal="center"))
+    sc(ws2, r, 3, '=COUNTIFS(Data!B2:B'+str(DER)+',">="&'+str(lo)+',Data!B2:B'+str(DER)+',"<="&'+str(hi)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 4, '=AVERAGEIFS(Data!N2:N'+str(DER)+',Data!B2:B'+str(DER)+',">="&'+str(lo)+',Data!B2:B'+str(DER)+',"<="&'+str(hi)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws2, r, 5, '=AVERAGEIFS(Data!G2:G'+str(DER)+',Data!B2:B'+str(DER)+',">="&'+str(lo)+',Data!B2:B'+str(DER)+',"<="&'+str(hi)+')', fmt='0.0', align=Alignment(horizontal="center"))
+    sc(ws2, r, 6, '=IF(C'+str(r)+'=0,0,COUNTIFS(Data!B2:B'+str(DER)+',">="&'+str(lo)+',Data!B2:B'+str(DER)+',"<="&'+str(hi)+',Data!O2:O'+str(DER)+',4)/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+stripe(ws2, 52, 53, 2, 6)
+
+# Summary Statistics (Formula-Driven)
+section_label(ws2, "Risk Factor Summary Statistics", 55, 1, 7)
+write_hdr(ws2, 56, 2, ["Statistic", "Study Time", "Absences", "GPA", "Risk Score"])
+summ_stats = [
+    ("Mean", "AVERAGE"),
+    ("Median", "MEDIAN"),
+    ("Std Dev", "STDEV"),
+    ("Min", "MIN"),
+    ("Max", "MAX"),
+]
+stat_cols = {"Study Time":"F", "Absences":"G", "GPA":"N", "Risk Score":"Q"}
+for idx, (slbl, sfunc) in enumerate(summ_stats):
+    r = 57 + idx
+    sc(ws2, r, 2, slbl, font=bold_font, align=Alignment(horizontal="left"))
+    for ci, (_, dcol) in enumerate(stat_cols.items()):
+        fmt_s = dec_fmt if dcol in ["N","Q"] else '0.0'
+        sc(ws2, r, 3+ci, '=ROUND('+sfunc+'(Data!'+dcol+'2:'+dcol+str(DER)+'),2)', fmt=fmt_s, align=Alignment(horizontal="center"))
+stripe(ws2, 57, 61, 2, 6)
 
 for c in range(1, 20):
     ws2.column_dimensions[get_column_letter(c)].width = 15
@@ -459,6 +559,57 @@ ws3.conditional_formatting.add('H16:H40',
                    mid_type='num', mid_value=75, mid_color='FFD966',
                    end_type='num', end_value=100, end_color='FF4444'))
 
+# Risk Score Summary Statistics (Formula-Driven)
+section_label(ws3, "Risk Score Statistics (Formula-Driven)", 42, 1, 9)
+write_hdr(ws3, 43, 2, ["Statistic", "Value", "Formula Used"])
+risk_stats = [
+    ("Average Risk Score", '=ROUND(AVERAGE(Data!Q2:Q'+str(DER)+'),2)', "AVERAGE", dec_fmt),
+    ("Median Risk Score", '=ROUND(MEDIAN(Data!Q2:Q'+str(DER)+'),2)', "MEDIAN", dec_fmt),
+    ("Std Dev Risk Score", '=ROUND(STDEV(Data!Q2:Q'+str(DER)+'),3)', "STDEV", '0.000'),
+    ("Max Risk Score", '=ROUND(MAX(Data!Q2:Q'+str(DER)+'),2)', "MAX", dec_fmt),
+    ("Min Risk Score", '=ROUND(MIN(Data!Q2:Q'+str(DER)+'),2)', "MIN", dec_fmt),
+    ("Students Risk > 75", '=COUNTIF(Data!Q2:Q'+str(DER)+',">75")', "COUNTIF", num_fmt),
+    ("Students Risk > 55", '=COUNTIF(Data!Q2:Q'+str(DER)+',">55")', "COUNTIF", num_fmt),
+    ("Students Risk < 30", '=COUNTIF(Data!Q2:Q'+str(DER)+',"<30")', "COUNTIF", num_fmt),
+    ("Pct Critical+High", '=(COUNTIF(Data!Q2:Q'+str(DER)+',">55"))/COUNTA(Data!A2:A'+str(DER)+')', "COUNTIF/COUNTA", pct_fmt),
+    ("Pct Low Risk", '=COUNTIF(Data!Q2:Q'+str(DER)+',"<30")/COUNTA(Data!A2:A'+str(DER)+')', "COUNTIF/COUNTA", pct_fmt),
+]
+for idx, (rlbl, rfml, rexp, rfmt) in enumerate(risk_stats):
+    r = 44 + idx
+    sc(ws3, r, 2, rlbl, font=bold_font, align=Alignment(horizontal="left"))
+    sc(ws3, r, 3, rfml, fmt=rfmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 4, rexp, font=Font(name="Calibri", italic=True, size=9, color="666666"), align=Alignment(horizontal="left"))
+stripe(ws3, 44, 53, 2, 4)
+
+# Risk by Grade (Formula-Driven Cross-Tab)
+section_label(ws3, "Risk Distribution by Grade (Formula-Driven)", 55, 1, 9)
+write_hdr(ws3, 56, 2, ["Grade", "Count", "Avg Risk Score", "High+Critical Count", "High+Critical %"])
+for idx, (gl, gn) in enumerate([("A",0),("B",1),("C",2),("D",3),("F",4)]):
+    r = 57 + idx
+    sc(ws3, r, 2, gl, font=bold_font, align=Alignment(horizontal="center"))
+    sc(ws3, r, 3, '=COUNTIF(Data!O2:O'+str(DER)+','+str(gn)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 4, '=AVERAGEIF(Data!O2:O'+str(DER)+','+str(gn)+',Data!Q2:Q'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 5, '=COUNTIFS(Data!O2:O'+str(DER)+','+str(gn)+',Data!Q2:Q'+str(DER)+',">55")', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 6, '=IF(C'+str(r)+'=0,0,E'+str(r)+'/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+sc(ws3, 62, 2, "Total", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws3, 62, 3, '=SUM(C57:C61)', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws3, 62, 4, '=AVERAGE(Data!Q2:Q'+str(DER)+')', font=bold_font, fmt=dec_fmt, align=Alignment(horizontal="center"))
+sc(ws3, 62, 5, '=SUM(E57:E61)', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws3, 62, 6, '=E62/C62', font=bold_font, fmt=pct_fmt, align=Alignment(horizontal="center"))
+stripe(ws3, 57, 61, 2, 6)
+
+# Risk by Tutoring Status (Formula)
+section_label(ws3, "Risk by Tutoring Status (Formula-Driven)", 64, 1, 9)
+write_hdr(ws3, 65, 2, ["Tutoring", "Students", "Avg Risk Score", "High+Critical Count", "Pct High Risk"])
+for idx, (tlbl, tv) in enumerate([("No Tutoring",0),("With Tutoring",1)]):
+    r = 66 + idx
+    sc(ws3, r, 2, tlbl, align=Alignment(horizontal="center"))
+    sc(ws3, r, 3, '=COUNTIF(Data!H2:H'+str(DER)+','+str(tv)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 4, '=AVERAGEIF(Data!H2:H'+str(DER)+','+str(tv)+',Data!Q2:Q'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 5, '=COUNTIFS(Data!H2:H'+str(DER)+','+str(tv)+',Data!Q2:Q'+str(DER)+',">55")', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws3, r, 6, '=IF(C'+str(r)+'=0,0,E'+str(r)+'/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+stripe(ws3, 66, 67, 2, 6)
+
 for c in range(1, 20):
     ws3.column_dimensions[get_column_letter(c)].width = 14
 
@@ -543,26 +694,68 @@ for idx, (clbl, cfml, cexp, cfmt) in enumerate(costs):
     sc(ws4, r, 4, cexp, font=Font(name="Calibri", italic=True, size=9, color="666666"), align=Alignment(horizontal="left"))
 stripe(ws4, 34, 39, 2, 4)
 
+# Resource Allocation by Risk Level (Formula-Driven)
+section_label(ws4, "Resource Allocation by Risk Level (Formula-Driven)", 40, 1, 8)
+write_hdr(ws4, 41, 2, ["Risk Level", "Students", "% of Total", "Tutoring Alloc", "Mentoring Alloc", "Tutoring Cost", "Mentoring Cost"])
+risk_alloc = [("Low",0,30,0,0), ("Medium",30,55,10,5), ("High",55,75,40,30), ("Critical",75,100,50,65)]
+for idx, (rl, lo, hi, tpct, mpct) in enumerate(risk_alloc):
+    r = 42 + idx
+    op = '"<="' if hi == 100 else '"<"'
+    sc(ws4, r, 2, rl, font=bold_font, align=Alignment(horizontal="center"))
+    sc(ws4, r, 3, '=COUNTIFS(Data!Q2:Q'+str(DER)+',">="&'+str(lo)+',Data!Q2:Q'+str(DER)+','+op+'&'+str(hi)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws4, r, 4, '=C'+str(r)+'/COUNTA(Data!A2:A'+str(DER)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+    sc(ws4, r, 5, '=ROUND(C'+str(r)+'*'+str(tpct)+'/100,0)', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws4, r, 6, '=ROUND(C'+str(r)+'*'+str(mpct)+'/100,0)', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws4, r, 7, '=E'+str(r)+'*D9', fmt='"$"#,##0', align=Alignment(horizontal="center"))
+    sc(ws4, r, 8, '=F'+str(r)+'*D10', fmt='"$"#,##0', align=Alignment(horizontal="center"))
+sc(ws4, 46, 2, "Total", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws4, 46, 3, '=SUM(C42:C45)', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 46, 4, '=SUM(D42:D45)', font=bold_font, fmt=pct_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 46, 5, '=SUM(E42:E45)', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 46, 6, '=SUM(F42:F45)', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 46, 7, '=SUM(G42:G45)', font=bold_font, fmt='"$"#,##0', align=Alignment(horizontal="center"))
+sc(ws4, 46, 8, '=SUM(H42:H45)', font=bold_font, fmt='"$"#,##0', align=Alignment(horizontal="center"))
+stripe(ws4, 42, 45, 2, 8)
+
+# ROI Metrics (Formula-Driven)
+section_label(ws4, "Return on Investment Metrics (Formula-Driven)", 48, 1, 8)
+write_hdr(ws4, 49, 2, ["ROI Metric", "Value", "Formula"])
+roi_metrics = [
+    ("Total Intervention Budget", '=G46+H46', "Sum of costs", '"$"#,##0'),
+    ("Students Targeted", '=E46+F46', "Sum tutoring + mentoring", num_fmt),
+    ("Cost per At-Risk Student", '=IF((E46+F46)>0,ROUND((G46+H46)/(E46+F46),0),0)', "Budget/Targeted", '"$"#,##0'),
+    ("Est. Students Saved", '=C27', "From projections", num_fmt),
+    ("Cost per Student Saved", '=IF(C27>0,ROUND((G46+H46)/C27,0),0)', "Budget/Saved", '"$"#,##0'),
+    ("Dropout Cost Avoided (est $30K/student)", '=C27*30000', "Saved x $30K", '"$"#,##0'),
+    ("Net ROI", '=C27*30000-(G46+H46)', "Avoided - Budget", '"$"#,##0'),
+]
+for idx, (mlbl, mfml, mexp, mfmt) in enumerate(roi_metrics):
+    r = 50 + idx
+    sc(ws4, r, 2, mlbl, font=bold_font, align=Alignment(horizontal="left"))
+    sc(ws4, r, 3, mfml, fmt=mfmt, align=Alignment(horizontal="center"))
+    sc(ws4, r, 4, mexp, font=Font(name="Calibri", italic=True, size=9, color="666666"), align=Alignment(horizontal="left"))
+stripe(ws4, 50, 56, 2, 4)
+
 # CHART: Current vs Projected
-section_label(ws4, "Current vs Projected", 42, 1, 6)
-write_hdr(ws4, 43, 2, ["Metric", "Current", "Projected"])
-sc(ws4, 44, 2, "Fail Rate", font=bold_font, align=Alignment(horizontal="center"))
-sc(ws4, 44, 3, '=C16', fmt=pct_fmt, align=Alignment(horizontal="center"))
-sc(ws4, 44, 4, '=C28', fmt=pct_fmt, align=Alignment(horizontal="center"))
-sc(ws4, 45, 2, "Avg GPA (At-Risk)", font=bold_font, align=Alignment(horizontal="center"))
-sc(ws4, 45, 3, '=C18', fmt=dec_fmt, align=Alignment(horizontal="center"))
-sc(ws4, 45, 4, '=C26', fmt=dec_fmt, align=Alignment(horizontal="center"))
-sc(ws4, 46, 2, "Fail Count", font=bold_font, align=Alignment(horizontal="center"))
-sc(ws4, 46, 3, '=C15', fmt=num_fmt, align=Alignment(horizontal="center"))
-sc(ws4, 46, 4, '=MAX(0,C15-C27)', fmt=num_fmt, align=Alignment(horizontal="center"))
+section_label(ws4, "Current vs Projected", 58, 1, 6)
+write_hdr(ws4, 59, 2, ["Metric", "Current", "Projected"])
+sc(ws4, 60, 2, "Fail Rate", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws4, 60, 3, '=C16', fmt=pct_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 60, 4, '=C28', fmt=pct_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 61, 2, "Avg GPA (At-Risk)", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws4, 61, 3, '=C18', fmt=dec_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 61, 4, '=C26', fmt=dec_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 62, 2, "Fail Count", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws4, 62, 3, '=C15', fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws4, 62, 4, '=MAX(0,C15-C27)', fmt=num_fmt, align=Alignment(horizontal="center"))
 
 ch_comp = BarChart()
 ch_comp.type = "col"; ch_comp.grouping = "clustered"; ch_comp.style = 10
 ch_comp.title = "Current vs Projected After Intervention"
 ch_comp.y_axis.title = "Value"
-cats_comp = Reference(ws4, min_col=2, min_row=44, max_row=46)
-vals_curr = Reference(ws4, min_col=3, min_row=43, max_row=46)
-vals_proj = Reference(ws4, min_col=4, min_row=43, max_row=46)
+cats_comp = Reference(ws4, min_col=2, min_row=60, max_row=62)
+vals_curr = Reference(ws4, min_col=3, min_row=59, max_row=62)
+vals_proj = Reference(ws4, min_col=4, min_row=59, max_row=62)
 ch_comp.add_data(vals_curr, titles_from_data=True)
 ch_comp.add_data(vals_proj, titles_from_data=True)
 ch_comp.set_categories(cats_comp)
@@ -572,15 +765,15 @@ ch_comp.series[1].graphicalProperties.solidFill = GREEN_FILL
 ws4.add_chart(ch_comp, "F12")
 
 # Cost Pie
-sc(ws4, 48, 6, "Tutoring", align=Alignment(horizontal="center"))
-sc(ws4, 49, 6, "Mentoring", align=Alignment(horizontal="center"))
-sc(ws4, 48, 7, '=C36', fmt='"$"#,##0', align=Alignment(horizontal="center"))
-sc(ws4, 49, 7, '=C37', fmt='"$"#,##0', align=Alignment(horizontal="center"))
+sc(ws4, 64, 6, "Tutoring", align=Alignment(horizontal="center"))
+sc(ws4, 65, 6, "Mentoring", align=Alignment(horizontal="center"))
+sc(ws4, 64, 7, '=C36', fmt='"$"#,##0', align=Alignment(horizontal="center"))
+sc(ws4, 65, 7, '=C37', fmt='"$"#,##0', align=Alignment(horizontal="center"))
 pie_cost = PieChart()
 pie_cost.title = "Cost Breakdown"; pie_cost.style = 10
 pie_cost.width = 14; pie_cost.height = 10
-cats_cost = Reference(ws4, min_col=6, min_row=48, max_row=49)
-vals_cost = Reference(ws4, min_col=7, min_row=48, max_row=49)
+cats_cost = Reference(ws4, min_col=6, min_row=64, max_row=65)
+vals_cost = Reference(ws4, min_col=7, min_row=64, max_row=65)
 pie_cost.add_data(vals_cost, titles_from_data=False)
 pie_cost.set_categories(cats_cost)
 dp_c0 = DataPoint(idx=0); dp_c0.graphicalProperties.solidFill = "4472C4"
@@ -695,6 +888,63 @@ for idx, ev in enumerate(range(4)):
     sc(ws5, r, 5, '=COUNTIFS(Data!D2:D'+str(DER)+','+str(ev)+',Data!O2:O'+str(DER)+',4)/C'+str(r), fmt=pct_fmt, align=Alignment(horizontal="center"))
     sc(ws5, r, 6, '=AVERAGEIF(Data!D2:D'+str(DER)+','+str(ev)+',Data!Q2:Q'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
 stripe(ws5, 33, 38, 2, 6)
+
+# Ethnicity detailed analysis with more formulas
+section_label(ws5, "Ethnicity Detailed Analysis (Formula-Driven)", 40, 1, 8)
+write_hdr(ws5, 41, 2, ["Ethnicity", "Count", "Avg GPA", "Avg Study Time", "Avg Absences", "Fail Rate", "Avg Risk Score"])
+for idx, ev in enumerate(range(4)):
+    r = 42 + idx
+    sc(ws5, r, 2, "Ethnicity "+str(ev), align=Alignment(horizontal="center"))
+    sc(ws5, r, 3, '=COUNTIF(Data!D2:D'+str(DER)+','+str(ev)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 4, '=AVERAGEIF(Data!D2:D'+str(DER)+','+str(ev)+',Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 5, '=AVERAGEIF(Data!D2:D'+str(DER)+','+str(ev)+',Data!F2:F'+str(DER)+')', fmt='0.0', align=Alignment(horizontal="center"))
+    sc(ws5, r, 6, '=AVERAGEIF(Data!D2:D'+str(DER)+','+str(ev)+',Data!G2:G'+str(DER)+')', fmt='0.0', align=Alignment(horizontal="center"))
+    sc(ws5, r, 7, '=IF(C'+str(r)+'=0,0,COUNTIFS(Data!D2:D'+str(DER)+','+str(ev)+',Data!O2:O'+str(DER)+',4)/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 8, '=AVERAGEIF(Data!D2:D'+str(DER)+','+str(ev)+',Data!Q2:Q'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+sc(ws5, 46, 2, "Overall", font=bold_font, align=Alignment(horizontal="center"))
+sc(ws5, 46, 3, '=COUNTA(Data!A2:A'+str(DER)+')', font=bold_font, fmt=num_fmt, align=Alignment(horizontal="center"))
+sc(ws5, 46, 4, '=AVERAGE(Data!N2:N'+str(DER)+')', font=bold_font, fmt=dec_fmt, align=Alignment(horizontal="center"))
+sc(ws5, 46, 5, '=AVERAGE(Data!F2:F'+str(DER)+')', font=bold_font, fmt='0.0', align=Alignment(horizontal="center"))
+sc(ws5, 46, 6, '=AVERAGE(Data!G2:G'+str(DER)+')', font=bold_font, fmt='0.0', align=Alignment(horizontal="center"))
+sc(ws5, 46, 7, '=COUNTIF(Data!O2:O'+str(DER)+',4)/COUNTA(Data!A2:A'+str(DER)+')', font=bold_font, fmt=pct_fmt, align=Alignment(horizontal="center"))
+sc(ws5, 46, 8, '=AVERAGE(Data!Q2:Q'+str(DER)+')', font=bold_font, fmt=dec_fmt, align=Alignment(horizontal="center"))
+stripe(ws5, 42, 45, 2, 8)
+
+# Parental Education Fairness (Formula-Driven)
+section_label(ws5, "Parental Education Equity Check (Formula-Driven)", 48, 1, 8)
+write_hdr(ws5, 49, 2, ["Education Level", "Count", "Avg GPA", "Fail Rate", "Avg Risk Score", "High Risk %"])
+edu_levels_eth = [(0,"None"),(1,"High School"),(2,"Some College"),(3,"Bachelor's"),(4,"Higher")]
+for idx, (ev, el) in enumerate(edu_levels_eth):
+    r = 50 + idx
+    sc(ws5, r, 2, el, align=Alignment(horizontal="center"))
+    sc(ws5, r, 3, '=COUNTIF(Data!E2:E'+str(DER)+','+str(ev)+')', fmt=num_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 4, '=AVERAGEIF(Data!E2:E'+str(DER)+','+str(ev)+',Data!N2:N'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 5, '=IF(C'+str(r)+'=0,0,COUNTIFS(Data!E2:E'+str(DER)+','+str(ev)+',Data!O2:O'+str(DER)+',4)/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 6, '=AVERAGEIF(Data!E2:E'+str(DER)+','+str(ev)+',Data!Q2:Q'+str(DER)+')', fmt=dec_fmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 7, '=IF(C'+str(r)+'=0,0,COUNTIFS(Data!E2:E'+str(DER)+','+str(ev)+',Data!Q2:Q'+str(DER)+',">55")/C'+str(r)+')', fmt=pct_fmt, align=Alignment(horizontal="center"))
+stripe(ws5, 50, 54, 2, 7)
+
+# Disparity Analysis (Formula-Driven)
+section_label(ws5, "Disparity Analysis (Formula-Driven)", 56, 1, 8)
+write_hdr(ws5, 57, 2, ["Metric", "Value", "Formula Used"])
+disparity_metrics = [
+    ("Max Fail Rate (Gender)", '=MAX(E33:E34)', "MAX", pct_fmt),
+    ("Min Fail Rate (Gender)", '=MIN(E33:E34)', "MIN", pct_fmt),
+    ("Gender Fail Rate Gap", '=MAX(E33:E34)-MIN(E33:E34)', "MAX-MIN", pct_fmt),
+    ("Max Fail Rate (Ethnicity)", '=MAX(G42:G45)', "MAX", pct_fmt),
+    ("Min Fail Rate (Ethnicity)", '=MIN(G42:G45)', "MIN", pct_fmt),
+    ("Ethnicity Fail Rate Gap", '=MAX(G42:G45)-MIN(G42:G45)', "MAX-MIN", pct_fmt),
+    ("Max Avg Risk (Education)", '=MAX(F50:F54)', "MAX", dec_fmt),
+    ("Min Avg Risk (Education)", '=MIN(F50:F54)', "MIN", dec_fmt),
+    ("Education Risk Gap", '=MAX(F50:F54)-MIN(F50:F54)', "MAX-MIN", dec_fmt),
+    ("Overall Bias Flag", '=IF(MAX(E33:E34)-MIN(E33:E34)>0.05,"REVIEW NEEDED","ACCEPTABLE")', "IF(gap>5%)", None),
+]
+for idx, (dlbl, dfml, dexp, dfmt) in enumerate(disparity_metrics):
+    r = 58 + idx
+    sc(ws5, r, 2, dlbl, font=bold_font, align=Alignment(horizontal="left"))
+    sc(ws5, r, 3, dfml, fmt=dfmt, align=Alignment(horizontal="center"))
+    sc(ws5, r, 4, dexp, font=Font(name="Calibri", italic=True, size=9, color="666666"), align=Alignment(horizontal="left"))
+stripe(ws5, 58, 67, 2, 4)
 
 # Fairness chart
 ch_fair = BarChart()

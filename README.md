@@ -1,52 +1,101 @@
-# 🎓 Student Early Warning Dashboard# 🎓 STUDENT EARLY WARNING DASHBOARD - PROJECT COMPLETE ✅
+# 🎓 Student Early Warning Dashboard# 🎓 Student Early Warning Dashboard# 🎓 STUDENT EARLY WARNING DASHBOARD - PROJECT COMPLETE ✅
 
 
+
+An interactive dashboard to reduce university failure rates by 20% through data-driven early intervention.  
+
+Built with **Plotly Dash** · Deployable on **Vercel**
 
 An interactive data-driven dashboard to reduce university failure rates by 20% through early intervention. Built with **Plotly Dash** and deployable on **Vercel**.## 📦 DELIVERABLES SUMMARY
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/prachisingh342006/data_analytics_project)
 
+
+
+---
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/prachisingh342006/data_analytics_project)Your comprehensive early warning system is ready! Here's what has been created:
 
-
-
-------
+## 📊 Dashboard Pages
 
 
 
-## 🚀 Live Demo## 📁 FILES CREATED
+| Tab | What it shows |
+
+|-----|---------------|------
+
+| Academic Overview | KPIs, grade distribution, pass/fail rates |
+
+| Risk Factor Analysis | Study time vs GPA, absences impact, correlations |
+
+| Risk Index | Risk scores, category breakdown, top 20 at-risk students |
+
+| Intervention Simulator | Interactive sliders for what-if scenarios & cost estimates |## 🚀 Live Demo## 📁 FILES CREATED
+
+| Ethics & Safeguards | Fairness checks, factor weights, privacy policy |
 
 
+
+## 📁 Project Structure
 
 Deploy your own instance on Vercel or run locally — see instructions below.### 1. **Student_Early_Warning_Dashboard.xlsx** (637 KB)
 
-**The main Excel dashboard file with 5 interactive pages**
+```
 
-## 📊 Dashboard Pages
+app.py                          → Dash web app (runs on localhost)**The main Excel dashboard file with 5 interactive pages**
 
-#### Page Structure:
+build_dashboard.py              → Generates Excel dashboard with formulas & charts
 
-| Page | Description |- **Page 1: Academic Overview** - KPIs, grade distribution, pass/fail rates
+Student_performance_data _.csv  → Source data (2,392 students)## 📊 Dashboard Pages
+
+Student_Early_Warning_Dashboard.xlsx → Generated Excel dashboard
+
+api/index.py                    → Vercel serverless entry point#### Page Structure:
+
+vercel.json                     → Vercel config
+
+requirements.txt                → Python dependencies| Page | Description |- **Page 1: Academic Overview** - KPIs, grade distribution, pass/fail rates
+
+```
 
 |------|-------------|- **Page 2: Risk Factor Analysis** - Correlation analysis, performance drivers
 
+## 🛠️ Run Locally
+
 | **📊 Academic Overview** | KPIs, grade distribution, pass/fail rates, GPA by parental education |- **Page 3: Performance Risk Index** - Risk scoring for all 2,392 students
 
-| **🔍 Risk Factor Analysis** | Study time vs GPA, absences vs GPA, correlation analysis, tutoring & support impact |- **Page 4: Intervention Simulator** - Interactive "what-if" scenario modeling
+```bash
 
-| **⚠️ Performance Risk Index** | Risk score distribution, category breakdown, top 20 at-risk students |- **Page 5: Ethics & Safeguards** - Privacy, bias monitoring, governance
+pip install -r requirements.txt| **🔍 Risk Factor Analysis** | Study time vs GPA, absences vs GPA, correlation analysis, tutoring & support impact |- **Page 4: Intervention Simulator** - Interactive "what-if" scenario modeling
+
+python app.py
+
+```| **⚠️ Performance Risk Index** | Risk score distribution, category breakdown, top 20 at-risk students |- **Page 5: Ethics & Safeguards** - Privacy, bias monitoring, governance
+
+Open → **http://127.0.0.1:8050**
 
 | **🎯 Intervention Simulator** | Interactive sliders to model study time increase, absence reduction, tutoring enrollment & cost |
 
+## ☁️ Deploy to Vercel
+
 | **🛡️ Ethics & Safeguards** | Factor weights transparency, fairness checks by gender & ethnicity, privacy policy |**All calculations use Excel formulas - 100% dynamic, no hardcoded values!**
 
+Click the **Deploy** button above, or:
+
+```bash
+
+npm i -g vercel && vercel --prod
+
+```## 📁 Project Structure---
 
 
-## 📁 Project Structure---
+
+## 📄 License
 
 
 
-```### 2. **DASHBOARD_README.md** (19 KB)
+For educational purposes.```### 2. **DASHBOARD_README.md** (19 KB)
+
 
 ├── app.py                          # Main Dash application (all 5 tabs)**Comprehensive 50+ page user guide**
 

@@ -23,7 +23,6 @@ Thumbs.db
 ~$*
 
 # Output files
-*.xlsx
 *.zip
 
 # Vercel

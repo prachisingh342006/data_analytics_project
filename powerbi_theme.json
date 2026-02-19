@@ -1,0 +1,31 @@
+{
+  "name": "Student Early Warning Dashboard",
+  "dataColors": [
+    "#1B2A4A", "#2E5090", "#E8A838", "#70AD47", "#FF4444",
+    "#4472C4", "#ED7D31", "#548235", "#FFD966", "#FF9944"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#1B2A4A",
+  "tableAccent": "#2E5090",
+  "good": "#70AD47",
+  "neutral": "#FFD966",
+  "bad": "#FF4444",
+  "maximum": "#FF4444",
+  "center": "#FFD966",
+  "minimum": "#70AD47",
+  "textClasses": {
+    "callout": { "fontSize": 28, "fontFace": "Segoe UI", "color": "#1B2A4A" },
+    "title": { "fontSize": 16, "fontFace": "Segoe UI Semibold", "color": "#1B2A4A" },
+    "header": { "fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#2E5090" },
+    "label": { "fontSize": 10, "fontFace": "Segoe UI", "color": "#333333" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border": [{ "color": { "solid": { "color": "#D6E4F0" } }, "width": 1 }],
+        "title": [{ "fontColor": { "solid": { "color": "#1B2A4A" } }, "fontSize": 12 }]
+      }
+    }
+  }
+}

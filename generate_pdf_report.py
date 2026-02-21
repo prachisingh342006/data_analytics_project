@@ -31,6 +31,12 @@ BASE   = os.path.dirname(os.path.abspath(__file__))
 CSV    = os.path.join(BASE, "Student_performance_data _.csv")
 OUT    = os.path.join(BASE, "Student_Early_Warning_Report.pdf")
 
+# ─── project links ────────────────────────────────────────────────────────────
+VERCEL_URL  = "https://data-analytics-project.vercel.app/"
+GITHUB_URL  = "https://github.com/prachisingh342006/data_analytics_project"
+DRIVE_URL   = "https://drive.google.com/drive/u/1/folders/1CN2-sJsGI9Efx54qJGCY23grD-jNhb7h"
+KAGGLE_URL  = "https://www.kaggle.com/datasets/lainguyn123/student-performance-factors"
+
 # ─── colour palette ───────────────────────────────────────────────────────────
 DARK_BLUE  = colors.HexColor("#1B2A4A")
 MED_BLUE   = colors.HexColor("#2E5090")
@@ -316,13 +322,26 @@ story.append(Spacer(1, 2.2*cm))
 
 story.append(Paragraph("Prepared by:", cover_meta))
 story.append(Paragraph("<b>Prachi Singh</b>", cover_meta))
-story.append(Spacer(1, 0.4*cm))
-story.append(Paragraph("GitHub Repository:", cover_meta))
-story.append(Paragraph(
-    "https://github.com/prachisingh342006/data_analytics_project", cover_meta))
+story.append(Spacer(1, 0.5*cm))
+
+# ── three link rows on cover ──────────────────────────────────────────
+link_label = S("LLabel", fontName="Helvetica",      fontSize=9,
+               textColor=colors.HexColor("#A0B8D8"), alignment=TA_CENTER, leading=13)
+link_val   = S("LVal",   fontName="Helvetica-Bold", fontSize=9,
+               textColor=ACCENT, alignment=TA_CENTER, leading=13, spaceAfter=4)
+
+story.append(Paragraph("🌐  Live Dashboard", link_label))
+story.append(Paragraph(VERCEL_URL, link_val))
+
+story.append(Paragraph("💻  GitHub Repository", link_label))
+story.append(Paragraph(GITHUB_URL, link_val))
+
+story.append(Paragraph("📁  Project Files (Google Drive)", link_label))
+story.append(Paragraph(DRIVE_URL,  link_val))
+
 story.append(Spacer(1, 0.4*cm))
 story.append(Paragraph(f"Report Date: February 2026", cover_meta))
-story.append(Spacer(1, 0.5*cm))
+story.append(Spacer(1, 0.3*cm))
 story.append(Paragraph(f"Dataset: {total:,} students  |  15 variables  |  Academic Year 2024–25",
                         cover_meta))
 story.append(PageBreak())
@@ -354,7 +373,7 @@ ds_table_data = [
     ["Field",         "Detail"],
     ["Name",          "Student Performance Factors Dataset"],
     ["Source",        "Kaggle — publicly available"],
-    ["URL",           "https://www.kaggle.com/datasets/lainguyn123/student-performance-factors"],
+    ["Dataset URL",   KAGGLE_URL],
     ["Records",       f"{total:,} students"],
     ["Variables",     "15 (StudentID, Age, Gender, Ethnicity, ParentalEducation, "
                       "StudyTimeWeekly, Absences, Tutoring, ParentalSupport, "
@@ -362,6 +381,9 @@ ds_table_data = [
     ["Licence",       "CC0 – Public Domain"],
     ["Collection yr", "2024–25 Academic Year"],
     ["Format",        "CSV, UTF-8"],
+    ["Live Dashboard",VERCEL_URL],
+    ["GitHub Repo",   GITHUB_URL],
+    ["Google Drive",  DRIVE_URL + "  (Excel dashboard, PDF report, CSV dataset)"],
 ]
 dt = Table(ds_table_data, colWidths=[PAGE_W*0.24, PAGE_W*0.76])
 dt.setStyle(TableStyle([
@@ -805,12 +827,43 @@ story.append(Spacer(1, 0.5*cm))
 
 story.append(HRFlowable(width="100%", thickness=1, color=MED_BLUE,
                          spaceAfter=6, spaceBefore=6))
+
+# ── end-note with all links ───────────────────────────────────────────────────
+endnote_style = S("EndNote", fontName="Helvetica-Oblique", fontSize=8,
+                  textColor=GRAY, alignment=TA_CENTER, leading=13)
+link_style    = S("EndLink", fontName="Helvetica-Bold", fontSize=8,
+                  textColor=MED_BLUE, alignment=TA_CENTER, leading=13)
+
+links_data = [
+    ["🌐  Live Dashboard",
+     "💻  GitHub Repository",
+     "📁  Google Drive",
+     "📊  Kaggle Dataset"],
+    [VERCEL_URL, GITHUB_URL, DRIVE_URL, KAGGLE_URL],
+]
+link_col_w = [PAGE_W / 4] * 4
+lt = Table(links_data, colWidths=link_col_w)
+lt.setStyle(TableStyle([
+    ("BACKGROUND",    (0,0), (-1,0),  DARK_BLUE),
+    ("TEXTCOLOR",     (0,0), (-1,0),  WHITE),
+    ("FONTNAME",      (0,0), (-1,0),  "Helvetica-Bold"),
+    ("FONTSIZE",      (0,0), (-1,0),  8),
+    ("BACKGROUND",    (0,1), (-1,1),  LIGHT_BG),
+    ("TEXTCOLOR",     (0,1), (-1,1),  MED_BLUE),
+    ("FONTNAME",      (0,1), (-1,1),  "Helvetica"),
+    ("FONTSIZE",      (0,1), (-1,1),  7),
+    ("ALIGN",         (0,0), (-1,-1), "CENTER"),
+    ("VALIGN",        (0,0), (-1,-1), "MIDDLE"),
+    ("TOPPADDING",    (0,0), (-1,-1), 6),
+    ("BOTTOMPADDING", (0,0), (-1,-1), 6),
+    ("GRID",          (0,0), (-1,-1), 0.4, MID_GRAY),
+    ("WORDWRAP",      (0,1), (-1,1),  1),
+]))
+story.append(lt)
+story.append(Spacer(1, 0.3*cm))
 story.append(Paragraph(
-    "GitHub: https://github.com/prachisingh342006/data_analytics_project  |  "
-    "Dataset: https://www.kaggle.com/datasets/lainguyn123/student-performance-factors  |  "
-    "Report generated: February 2026",
-    S("EndNote", fontName="Helvetica-Oblique", fontSize=8,
-      textColor=GRAY, alignment=TA_CENTER, leading=12)))
+    "Report generated: February 2026  |  Student Early Warning System  |  Prachi Singh",
+    endnote_style))
 
 # ═══════════════════════════════════════════════════════════════════════════════
 #  BUILD PDF

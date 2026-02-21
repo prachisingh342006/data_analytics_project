@@ -8,7 +8,9 @@ import numpy as np
 import os
 
 # ── GitHub Repository ────────────────────────────────────────────────
-GITHUB_REPO = "https://github.com/prachisingh342006/data_analytics_project"
+GITHUB_REPO   = "https://github.com/prachisingh342006/data_analytics_project"
+DRIVE_FOLDER  = "https://drive.google.com/drive/u/1/folders/1CN2-sJsGI9Efx54qJGCY23grD-jNhb7h"
+KAGGLE_DATASET = "https://www.kaggle.com/datasets/lainguyn123/student-performance-factors"
 
 # ── Load & Prepare Data ──────────────────────────────────────────────
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -179,16 +181,23 @@ def page_academic():
         html.Div([
             html.Div([dcc.Graph(figure=fig_edu)], style={**CARD, "flex": "1"}),
         ]),
-        # GitHub Repository Link
+        # Resources Link Bar
         html.Div([
             html.Div([
                 html.Span("📂 ", style={"fontSize":"18px"}),
-                html.Span("Source Code & Documentation: ", style={"color":COLORS["muted"],"fontWeight":"500"}),
-                html.A(GITHUB_REPO, href=GITHUB_REPO, target="_blank",
-                       style={"color":COLORS["accent"],"textDecoration":"none","fontWeight":"600"}),
-                html.Span(" — built with Plotly Dash & Python",
-                          style={"color":COLORS["muted"],"marginLeft":"8px","fontSize":"13px"}),
-            ], style={"display":"flex","alignItems":"center","flexWrap":"wrap","gap":"4px"}),
+                html.Span("Project Resources: ", style={"color":COLORS["muted"],"fontWeight":"600"}),
+                html.A("📁 Google Drive (Excel, PDF, Dataset)",
+                       href=DRIVE_FOLDER, target="_blank",
+                       style={"color":"#fdd835","textDecoration":"none","fontWeight":"600",
+                              "marginRight":"20px"}),
+                html.A("💻 GitHub Source Code",
+                       href=GITHUB_REPO, target="_blank",
+                       style={"color":COLORS["accent"],"textDecoration":"none","fontWeight":"600",
+                              "marginRight":"20px"}),
+                html.A("📊 Kaggle Dataset",
+                       href=KAGGLE_DATASET, target="_blank",
+                       style={"color":COLORS["green"],"textDecoration":"none","fontWeight":"600"}),
+            ], style={"display":"flex","alignItems":"center","flexWrap":"wrap","gap":"8px"}),
         ], style={**CARD, "padding":"14px 20px","borderLeft":f"4px solid {COLORS['blue']}"}),
     ])
 
@@ -562,22 +571,90 @@ app.layout = html.Div([
             html.P("Reducing university failure rates by 20% through data-driven early intervention",
                    style={"margin":"4px 0 0","fontSize":"14px","color": COLORS["muted"]}),
         ], style={"flex":"1"}),
-        html.A(
-            html.Div([
-                html.Img(src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
-                         style={"width":"22px","height":"22px","filter":"invert(1)","marginRight":"8px","verticalAlign":"middle"}),
-                html.Span("View on GitHub", style={"verticalAlign":"middle"}),
-            ], style={"display":"flex","alignItems":"center"}),
-            href=GITHUB_REPO, target="_blank",
-            style={"color":"#4fc3f7","textDecoration":"none","fontSize":"14px",
-                   "fontWeight":"600","backgroundColor":"rgba(33,150,243,0.15)",
-                   "padding":"10px 20px","borderRadius":"8px",
-                   "border":f"1px solid {COLORS['blue']}","transition":"all 0.2s"},
-        ),
+        html.Div([
+            html.A(
+                html.Div([
+                    html.Img(src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+                             style={"width":"20px","height":"20px","filter":"invert(1)",
+                                    "marginRight":"7px","verticalAlign":"middle"}),
+                    html.Span("GitHub", style={"verticalAlign":"middle"}),
+                ], style={"display":"flex","alignItems":"center"}),
+                href=GITHUB_REPO, target="_blank",
+                style={"color":"#4fc3f7","textDecoration":"none","fontSize":"14px",
+                       "fontWeight":"600","backgroundColor":"rgba(33,150,243,0.15)",
+                       "padding":"10px 18px","borderRadius":"8px",
+                       "border":f"1px solid {COLORS['blue']}"},
+            ),
+            html.A(
+                html.Div([
+                    html.Span("📁", style={"marginRight":"7px","fontSize":"16px"}),
+                    html.Span("Project Files", style={"verticalAlign":"middle"}),
+                ], style={"display":"flex","alignItems":"center"}),
+                href=DRIVE_FOLDER, target="_blank",
+                style={"color":"#fdd835","textDecoration":"none","fontSize":"14px",
+                       "fontWeight":"600","backgroundColor":"rgba(253,216,53,0.12)",
+                       "padding":"10px 18px","borderRadius":"8px",
+                       "border":"1px solid #fdd835"},
+            ),
+        ], style={"display":"flex","gap":"10px","alignItems":"center"}),
     ], style={"backgroundColor": COLORS["card"], "padding": "20px 30px",
               "borderBottom": f"2px solid {COLORS['blue']}",
               "color": COLORS["text"],
               "display":"flex","alignItems":"center","justifyContent":"space-between"}),
+
+    # ── Project Resources Banner ─────────────────────────────────────
+    html.Div([
+        html.Div([
+            html.Span("📂  Project Resources", style={
+                "color": COLORS["accent"], "fontWeight": "700",
+                "fontSize": "15px", "marginRight": "24px",
+            }),
+            # Google Drive
+            html.A(
+                html.Div([
+                    html.Span("📁 ", style={"fontSize":"15px"}),
+                    html.Span("Google Drive Folder", style={"fontWeight":"600"}),
+                    html.Span(" — Excel dashboard, PDF report, dataset & all project files",
+                              style={"color": COLORS["muted"], "fontSize":"13px",
+                                     "marginLeft":"6px"}),
+                ], style={"display":"inline-flex","alignItems":"center","gap":"2px"}),
+                href=DRIVE_FOLDER, target="_blank",
+                style={"color": "#fdd835", "textDecoration":"none",
+                       "marginRight":"28px", "whiteSpace":"nowrap"},
+            ),
+            # Dataset
+            html.A(
+                html.Div([
+                    html.Span("📊 ", style={"fontSize":"15px"}),
+                    html.Span("Kaggle Dataset", style={"fontWeight":"600"}),
+                    html.Span(" — Student Performance Factors (CC0, 2,392 records)",
+                              style={"color": COLORS["muted"], "fontSize":"13px",
+                                     "marginLeft":"6px"}),
+                ], style={"display":"inline-flex","alignItems":"center","gap":"2px"}),
+                href=KAGGLE_DATASET, target="_blank",
+                style={"color": COLORS["green"], "textDecoration":"none",
+                       "marginRight":"28px", "whiteSpace":"nowrap"},
+            ),
+            # GitHub
+            html.A(
+                html.Div([
+                    html.Span("💻 ", style={"fontSize":"15px"}),
+                    html.Span("GitHub Repo", style={"fontWeight":"600"}),
+                    html.Span(" — Source code (Dash, Python, Excel generator)",
+                              style={"color": COLORS["muted"], "fontSize":"13px",
+                                     "marginLeft":"6px"}),
+                ], style={"display":"inline-flex","alignItems":"center","gap":"2px"}),
+                href=GITHUB_REPO, target="_blank",
+                style={"color": COLORS["accent"], "textDecoration":"none",
+                       "whiteSpace":"nowrap"},
+            ),
+        ], style={"display":"flex","alignItems":"center","flexWrap":"wrap","gap":"8px"}),
+    ], style={
+        "backgroundColor": "rgba(26,39,51,0.95)",
+        "borderBottom": f"1px solid {COLORS['card_border']}",
+        "borderTop": f"1px solid rgba(79,195,247,0.2)",
+        "padding": "10px 30px",
+    }),
 
     # Tabs
     html.Div([

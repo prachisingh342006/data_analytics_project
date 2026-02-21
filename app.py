@@ -602,58 +602,71 @@ app.layout = html.Div([
               "color": COLORS["text"],
               "display":"flex","alignItems":"center","justifyContent":"space-between"}),
 
-    # ── Project Resources Banner ─────────────────────────────────────
+    # ── Project Resources Panel ──────────────────────────────────────
     html.Div([
-        html.Div([
-            html.Span("📂  Project Resources", style={
-                "color": COLORS["accent"], "fontWeight": "700",
-                "fontSize": "15px", "marginRight": "24px",
-            }),
-            # Google Drive
-            html.A(
+        html.Div("📂  Project Resources", style={
+            "color": COLORS["accent"], "fontWeight": "700",
+            "fontSize": "14px", "letterSpacing": "0.5px",
+            "marginBottom": "10px",
+        }),
+        # Google Drive row
+        html.A(
+            html.Div([
+                html.Div("📁", style={"fontSize":"20px","width":"32px","textAlign":"center","flexShrink":"0"}),
                 html.Div([
-                    html.Span("📁 ", style={"fontSize":"15px"}),
-                    html.Span("Google Drive Folder", style={"fontWeight":"600"}),
-                    html.Span(" — Excel dashboard, PDF report, dataset & all project files",
-                              style={"color": COLORS["muted"], "fontSize":"13px",
-                                     "marginLeft":"6px"}),
-                ], style={"display":"inline-flex","alignItems":"center","gap":"2px"}),
-                href=DRIVE_FOLDER, target="_blank",
-                style={"color": "#fdd835", "textDecoration":"none",
-                       "marginRight":"28px", "whiteSpace":"nowrap"},
-            ),
-            # Dataset
-            html.A(
+                    html.Div("Google Drive Folder", style={
+                        "fontWeight":"600","fontSize":"13px","color":"#fdd835"}),
+                    html.Div("Excel dashboard, PDF report, dataset & all project files", style={
+                        "fontSize":"11px","color":COLORS["muted"],"marginTop":"2px"}),
+                ]),
+            ], style={"display":"flex","alignItems":"center","gap":"10px"}),
+            href=DRIVE_FOLDER, target="_blank",
+            style={"textDecoration":"none","display":"block",
+                   "padding":"8px 12px","borderRadius":"8px","marginBottom":"6px",
+                   "backgroundColor":"rgba(253,216,53,0.07)",
+                   "border":"1px solid rgba(253,216,53,0.2)"},
+        ),
+        # Kaggle row
+        html.A(
+            html.Div([
+                html.Div("📊", style={"fontSize":"20px","width":"32px","textAlign":"center","flexShrink":"0"}),
                 html.Div([
-                    html.Span("📊 ", style={"fontSize":"15px"}),
-                    html.Span("Kaggle Dataset", style={"fontWeight":"600"}),
-                    html.Span(" — Student Performance Factors (CC0, 2,392 records)",
-                              style={"color": COLORS["muted"], "fontSize":"13px",
-                                     "marginLeft":"6px"}),
-                ], style={"display":"inline-flex","alignItems":"center","gap":"2px"}),
-                href=KAGGLE_DATASET, target="_blank",
-                style={"color": COLORS["green"], "textDecoration":"none",
-                       "marginRight":"28px", "whiteSpace":"nowrap"},
-            ),
-            # GitHub
-            html.A(
+                    html.Div("Kaggle Dataset", style={
+                        "fontWeight":"600","fontSize":"13px","color":COLORS["green"]}),
+                    html.Div("Student Performance Factors (CC0, 2,392 records)", style={
+                        "fontSize":"11px","color":COLORS["muted"],"marginTop":"2px"}),
+                ]),
+            ], style={"display":"flex","alignItems":"center","gap":"10px"}),
+            href=KAGGLE_DATASET, target="_blank",
+            style={"textDecoration":"none","display":"block",
+                   "padding":"8px 12px","borderRadius":"8px","marginBottom":"6px",
+                   "backgroundColor":"rgba(102,187,106,0.07)",
+                   "border":"1px solid rgba(102,187,106,0.2)"},
+        ),
+        # GitHub row
+        html.A(
+            html.Div([
+                html.Div("💻", style={"fontSize":"20px","width":"32px","textAlign":"center","flexShrink":"0"}),
                 html.Div([
-                    html.Span("💻 ", style={"fontSize":"15px"}),
-                    html.Span("GitHub Repo", style={"fontWeight":"600"}),
-                    html.Span(" — Source code (Dash, Python, Excel generator)",
-                              style={"color": COLORS["muted"], "fontSize":"13px",
-                                     "marginLeft":"6px"}),
-                ], style={"display":"inline-flex","alignItems":"center","gap":"2px"}),
-                href=GITHUB_REPO, target="_blank",
-                style={"color": COLORS["accent"], "textDecoration":"none",
-                       "whiteSpace":"nowrap"},
-            ),
-        ], style={"display":"flex","alignItems":"center","flexWrap":"wrap","gap":"8px"}),
+                    html.Div("GitHub Repo", style={
+                        "fontWeight":"600","fontSize":"13px","color":COLORS["accent"]}),
+                    html.Div("Source code (Dash, Python, Excel generator)", style={
+                        "fontSize":"11px","color":COLORS["muted"],"marginTop":"2px"}),
+                ]),
+            ], style={"display":"flex","alignItems":"center","gap":"10px"}),
+            href=GITHUB_REPO, target="_blank",
+            style={"textDecoration":"none","display":"block",
+                   "padding":"8px 12px","borderRadius":"8px",
+                   "backgroundColor":"rgba(79,195,247,0.07)",
+                   "border":f"1px solid rgba(79,195,247,0.2)"},
+        ),
     ], style={
-        "backgroundColor": "rgba(26,39,51,0.95)",
-        "borderBottom": f"1px solid {COLORS['card_border']}",
-        "borderTop": f"1px solid rgba(79,195,247,0.2)",
-        "padding": "10px 30px",
+        "backgroundColor": COLORS["card"],
+        "border": f"1px solid {COLORS['card_border']}",
+        "borderLeft": f"3px solid {COLORS['accent']}",
+        "borderRadius": "10px",
+        "padding": "14px 18px",
+        "margin": "16px 30px 0 30px",
     }),
 
     # Tabs
